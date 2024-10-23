@@ -1,13 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 	fmt.Println("PBKK GOLANG SECTION")
 
 	conferenceName := "PBKK"
-	const conferenceTickets = 50
-	var remainingTickets uint = 50
+	const conferenceTickets = 10
+	var remainingTickets uint = conferenceTickets
 	bookings := []string{}
 
 	fmt.Printf("Welcome to %v bookin system\n", conferenceName)
@@ -32,22 +35,26 @@ func main() {
 		fmt.Println("Please enter the number of tickets you want to book")
 		fmt.Scanln(&userTickets)
 
-		if userTickets > remainingTickets {
-			fmt.Printf("Invalid input cuz there are only %v tickets\n", remainingTickets)
-			continue
+		// --- VALIDATION INPUT
+		validName := len(firstName) >= 2 && len(lastName) >= 2
+		validEmail := strings.Contains(email, "@") && strings.Contains(email, ".")
+		validTickets := userTickets > 0 && userTickets <= remainingTickets
+
+		if validEmail && validName && validTickets {
+			remainingTickets -= userTickets
+
+			fmt.Printf("Thank you %v %v for booking %v tickets for %v. You will receive a convirmation email at %v\n", firstName, lastName, userTickets, conferenceName, email)
+
+			fmt.Printf("There are %v tickets remaining\n", remainingTickets)
+
+			bookings = append(bookings, firstName+" "+lastName)
+
+			fmt.Printf("Data type : %T\n", bookings)
+			fmt.Printf("Data : %v\n", bookings)
+			fmt.Printf("Data length : %v\n", len(bookings))
+		} else {
+			fmt.Println("There are many invalid inputs")
 		}
-
-		remainingTickets -= userTickets
-
-		fmt.Printf("Thank you %v %v for booking %v tickets for %v. You will receive a convirmation email at %v\n", firstName, lastName, userTickets, conferenceName, email)
-
-		fmt.Printf("There are %v tickets remaining\n", remainingTickets)
-
-		bookings = append(bookings, firstName+" "+lastName)
-
-		fmt.Printf("Data type : %T\n", bookings)
-		fmt.Printf("Data : %v\n", bookings)
-		fmt.Printf("Data length : %v\n", len(bookings))
 
 		// --- CONDITIONAL
 		if remainingTickets <= 0 {
@@ -66,6 +73,26 @@ func main() {
 	books := []string{"Book 1", "Book 2", "Book 3"}
 	for _, book := range books {
 		fmt.Println(book)
+	}
+
+	// --- SWITCH CASE
+	fmt.Println("Tolong masukkan asal kota")
+	var city string
+	fmt.Scan(&city)
+
+	city = strings.ToLower(city)
+
+	switch city {
+	case "jakarta", "depok", "bogor":
+		fmt.Println("Halo Jabodetabek")
+	case "solo", "semarang", "salatiga":
+		fmt.Println("Halo Jawa Tengah")
+	case "surabaya", "sidoharjo":
+		fmt.Println("Halo Jawa Timur")
+	case "bulan":
+		fmt.Println("Halo Alien")
+	default:
+		fmt.Println("Maaf kamu dari mana yaa")
 	}
 
 }
