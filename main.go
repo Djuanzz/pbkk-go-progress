@@ -3,7 +3,30 @@ package main
 import (
 	"fmt"
 	"strings"
+
+	"github.com/Djuanzz/pbkk-go-progress/helper"
 )
+
+func getUserInput() (string, string, string, uint) {
+	var firstName string
+	var lastName string
+	var email string
+	var userTickets uint
+
+	fmt.Println("Please enter your first name")
+	fmt.Scanln(&firstName)
+
+	fmt.Println("Please enter your last name")
+	fmt.Scanln(&lastName)
+
+	fmt.Println("Please enter your email")
+	fmt.Scanln(&email)
+
+	fmt.Println("Please enter the number of tickets you want to book")
+	fmt.Scanln(&userTickets)
+
+	return firstName, lastName, email, userTickets
+}
 
 func main() {
 	fmt.Println("PBKK GOLANG SECTION")
@@ -16,31 +39,14 @@ func main() {
 	fmt.Printf("Welcome to %v bookin system\n", conferenceName)
 	fmt.Printf("We have total of %v tickets and %v are tickets available\n", conferenceTickets, remainingTickets)
 
-	var firstName string
-	var lastName string
-	var email string
-	var userTickets uint
-
 	// --- LOOPING
 	for {
-		fmt.Println("Please enter your first name")
-		fmt.Scanln(&firstName)
-
-		fmt.Println("Please enter your last name")
-		fmt.Scanln(&lastName)
-
-		fmt.Println("Please enter your email")
-		fmt.Scanln(&email)
-
-		fmt.Println("Please enter the number of tickets you want to book")
-		fmt.Scanln(&userTickets)
+		firstName, lastName, email, userTickets := getUserInput()
 
 		// --- VALIDATION INPUT
-		validName := len(firstName) >= 2 && len(lastName) >= 2
-		validEmail := strings.Contains(email, "@") && strings.Contains(email, ".")
-		validTickets := userTickets > 0 && userTickets <= remainingTickets
+		validInput := helper.InputValidation(firstName, lastName, email, userTickets, remainingTickets)
 
-		if validEmail && validName && validTickets {
+		if validInput {
 			remainingTickets -= userTickets
 
 			fmt.Printf("Thank you %v %v for booking %v tickets for %v. You will receive a convirmation email at %v\n", firstName, lastName, userTickets, conferenceName, email)
